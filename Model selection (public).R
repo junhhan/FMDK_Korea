@@ -1,6 +1,5 @@
 rm(list= ls())
-#'%ni%' <- function(x,y)!('%in%'(x,y))
-library(parallel)
+library(parallel) # This code requires a parallel computation.
 setwd("D:/Choennam Univ/FMD_korea/Code")
 
 # 0. Set the seed
@@ -49,10 +48,13 @@ n_farm <- 4
 n_pigs <- c(825, 822, 854, 413)
 tau_min <- 0
 tau_max <- simperiod - 1
-obs_ts <- list(c(0,0,0,0,0,0,0,0,0,0,18,17,17,22,5,10,16,1,9,2),
-               c(0,0,0,0,0,0,0,0,0,16,47,36,35,24,23,15,3,6,7,3),
-               c(0,0,0,0,0,0,0,0,0,0,9,3,4,3,21,5,4,10,20,11),
-               c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,15,17,7))
+obs_ts <- list(rep(0,simperiod),
+               rep(0,simperiod),
+               rep(0,simperiod),
+               rep(0,simperiod)) 
+# Please note that "obs_ts" is supposed to contain the observed record of this study from 4 barns.
+# However, due to the authorisation issue, we are not able to share the actual record data.
+# Therefore, running the code below with the "obs_ts" above will not generate a result anywhere similar to our publication.
 
 m_l <- NULL
 
@@ -653,47 +655,3 @@ for (seq in 2:n_seq) {
   t_mid <- Sys.time(); print(seq); print(t_mid - t_init); print(t_mid); Sys.sleep(0.001); gc()
 }
 stopCluster(cl)
-
-# Analysis
-rm(list= ls())
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect1.RData")
-table(m_l)
-dat <- data.frame("seq"= 1, table(m_l))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect2.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 2, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect3.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 3, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect4.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 4, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect5.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 5, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect6.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 6, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect7.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 7, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect8.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 8, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect9.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 9, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect10.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 10, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect11.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 11, table(m_l)))
-load("D:/Choennam Univ/FMD_Korea/Code/fmd_modselect12.RData"); c(cutoff_01,cutoff_02,cutoff_03,cutoff_04)
-table(m_l)
-dat <- rbind(dat, data.frame("seq"= 12, table(m_l)))
-
-library(ggplot2)
-ggplot(data= dat, aes(x= m_l, y= Freq)) +
-  geom_bar(stat= "identity") +
-  facet_wrap(~seq, nrow= 2)
